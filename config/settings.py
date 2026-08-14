@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     data_dir: Path = Field(default=PROJECT_ROOT / "data")
     config_filename: str = "agent_config.json"
     defaults_path: Path = Field(default=PROJECT_ROOT / "config" / "defaults.json")
+    profile_path: Path = Field(default=PROJECT_ROOT / "config" / "profile.json")
 
     database_url: str = Field(default="")
     log_level: str = "INFO"
@@ -32,6 +33,7 @@ class Settings(BaseSettings):
     # LLM layer (Phase 2). Never hard-code a key; read it from the environment.
     llm_provider: str = "anthropic"
     llm_model: str = "claude-sonnet-4-5"
+    llm_max_tokens: int = 1500
     anthropic_api_key: str = ""
     openai_api_key: str = ""
 

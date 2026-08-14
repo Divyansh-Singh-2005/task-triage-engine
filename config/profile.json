@@ -1,0 +1,29 @@
+{
+  "display_name": "Contributor",
+  "headline": "Benchmark task engineering and Python systems work",
+  "skills": [
+    "Python",
+    "pytest",
+    "SQL",
+    "graph algorithms",
+    "RDF",
+    "SPARQL",
+    "exact arithmetic",
+    "Docker",
+    "GitHub Actions",
+    "technical writing"
+  ],
+  "preferred_technologies": [
+    "rdflib",
+    "SQLAlchemy",
+    "FastAPI",
+    "numpy"
+  ],
+  "avoid": [
+    "mobile",
+    "Unity",
+    "Salesforce"
+  ],
+  "weekly_hours": 15,
+  "notes": "Prefers well-specified tasks with a deterministic verifier."
+}
