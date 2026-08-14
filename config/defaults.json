@@ -1,0 +1,17 @@
+{
+  "agent_status": "stopped",
+  "monitoring_mode": "ACTIVE_PROJECT",
+  "active_project": "Project Dynamo",
+  "selected_projects": [
+    "Project Dynamo"
+  ],
+  "known_projects": [
+    "Project Dynamo"
+  ],
+  "task_rules": {
+    "minimum_ai_score": 80,
+    "review_threshold": 75,
+    "maximum_active_tasks": 2,
+    "require_human_approval": true
+  }
+}
