@@ -185,6 +185,14 @@ class EventRepository:
             stmt = stmt.where(AgentEvent.created_at >= since)
         return self.session.scalars(stmt.limit(limit)).all()
 
+    def latest_of_type(self, event_type: str) -> AgentEvent | None:
+        """Most recent event of one type, for 'when did the last cycle run'."""
+        return self.session.scalar(
+            select(AgentEvent)
+            .where(AgentEvent.event_type == event_type)
+            .order_by(AgentEvent.created_at.desc(), AgentEvent.id.desc())
+        )
+
     def count_by_type(self, event_type: str) -> int:
         return len(
             self.session.scalars(

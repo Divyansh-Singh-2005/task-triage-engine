@@ -26,9 +26,12 @@ class Settings(BaseSettings):
     config_filename: str = "agent_config.json"
     defaults_path: Path = Field(default=PROJECT_ROOT / "config" / "defaults.json")
     profile_path: Path = Field(default=PROJECT_ROOT / "config" / "profile.json")
+    inbox_filename: str = "inbox.json"
 
     database_url: str = Field(default="")
     log_level: str = "INFO"
+    log_file: str = ""
+    poll_interval_seconds: int = 300
 
     # LLM layer (Phase 2). Never hard-code a key; read it from the environment.
     llm_provider: str = "anthropic"
@@ -40,6 +43,10 @@ class Settings(BaseSettings):
     @property
     def config_path(self) -> Path:
         return self.data_dir / self.config_filename
+
+    @property
+    def inbox_path(self) -> Path:
+        return self.data_dir / self.inbox_filename
 
     def resolved_database_url(self) -> str:
         if self.database_url:
