@@ -1,13 +1,11 @@
-# Phase 1
+# Core
 pydantic>=2.7
 pydantic-settings>=2.2
+sqlalchemy>=2.0
+streamlit>=1.35
+
+# Testing
 pytest>=8.0
 
-# Phase 1.2
-sqlalchemy>=2.0
-
-# Phase 2+ (uncomment as each phase lands)
+# Optional: real LLM provider. Without it the offline heuristic baseline is used.
 # anthropic>=0.40
-# streamlit>=1.35
-# fastapi>=0.111
-# uvicorn>=0.30
