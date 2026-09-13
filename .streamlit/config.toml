@@ -1,0 +1,9 @@
+# Bind to loopback only. Without this Streamlit listens on every interface,
+# which puts an unauthenticated dashboard on your local network.
+# Override deliberately with: streamlit run app.py --server.address 0.0.0.0
+[server]
+address = "127.0.0.1"
+headless = true
+
+[browser]
+gatherUsageStats = false

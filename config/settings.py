@@ -39,6 +39,10 @@ class Settings(BaseSettings):
     llm_max_tokens: int = 1500
     anthropic_api_key: str = ""
     openai_api_key: str = ""
+    openai_model: str = "gpt-4o-mini"
+    ollama_model: str = "llama3.1:8b"
+    ollama_base_url: str = "http://localhost:11434"
+    dashboard_passphrase: str = ""
 
     @property
     def config_path(self) -> Path:

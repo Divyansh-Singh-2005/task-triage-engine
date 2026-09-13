@@ -7,5 +7,7 @@ streamlit>=1.35
 # Testing
 pytest>=8.0
 
-# Optional: real LLM provider. Without it the offline heuristic baseline is used.
+# Optional LLM providers. Without any of these the offline heuristic baseline
+# is used. Ollama needs no package - it is called over plain HTTP.
 # anthropic>=0.40
+# openai>=1.40

@@ -21,7 +21,9 @@ from services.agent_context import AgentContext
 from services.approval_service import ApprovalService
 from services.board import BoardSnapshot, TaskView, build_snapshot
 from services.evaluation_service import EvaluationService
+from services.maintenance import REQUEUABLE, MaintenanceService
 from services.task_service import TaskIngestionService
+from ui.auth import require_passphrase
 
 MODE_LABELS = {
     MonitoringMode.ACTIVE_PROJECT: "Active project",
@@ -391,6 +393,58 @@ def render_board(ctx: AgentContext, snapshot: BoardSnapshot) -> None:
                 render_task(ctx, task, snapshot)
 
 
+def render_maintenance(ctx: AgentContext) -> None:
+    """Operations for when something outside the pipeline changed."""
+    with st.expander("Maintenance", expanded=False):
+        with ctx.session() as session:
+            counts = MaintenanceService(session).requeue_counts()
+
+        st.caption(
+            "Re-queue after editing config/profile.json or the score thresholds. "
+            "Approved and in-flight tasks are never touched."
+        )
+        options = [s for s in REQUEUABLE if counts.get(s, 0)]
+        if not options:
+            st.caption("Nothing is currently re-queueable.")
+        else:
+            chosen = st.multiselect(
+                "Re-evaluate tasks currently in",
+                options,
+                default=options,
+                format_func=lambda s: f"{s.value} ({counts[s]})",
+            )
+            total = sum(counts[s] for s in chosen)
+            if st.button(f"Re-queue {total} task(s)", disabled=not chosen):
+                def run(session):
+                    return MaintenanceService(session).requeue(*chosen)
+
+                _act(ctx, run, f"Re-queued {total} task(s)")
+
+        st.divider()
+        st.caption(
+            "Projects are registered in two places: the config file and the "
+            "projects table. Reconcile makes them agree."
+        )
+        if st.button("Reconcile projects"):
+            def run(session):
+                return MaintenanceService(session).reconcile_projects(ctx.manager)
+
+            _act(ctx, run, "Projects reconciled")
+
+        st.divider()
+        with ctx.session() as session:
+            service = MaintenanceService(session)
+            tasks_csv = service.export_tasks_csv()
+            evaluations_csv = service.export_evaluations_csv()
+        tasks_col, evals_col = st.columns(2)
+        tasks_col.download_button("Export tasks (CSV)", tasks_csv,
+                                  file_name="tasks.csv", mime="text/csv",
+                                  width="stretch")
+        evals_col.download_button("Export evaluations (CSV)", evaluations_csv,
+                                  file_name="evaluations.csv", mime="text/csv",
+                                  width="stretch")
+
+
 def render_events(snapshot: BoardSnapshot) -> None:
     with st.expander("Recent activity", expanded=False):
         if not snapshot.events:
@@ -417,6 +471,8 @@ def render_events(snapshot: BoardSnapshot) -> None:
 def render() -> None:
     st.set_page_config(page_title="Handshake Task Agent", layout="wide")
     ctx = get_context()
+    if not require_passphrase(ctx.settings.dashboard_passphrase):
+        return
     config = ctx.config()
 
     with ctx.session() as session:
@@ -428,4 +484,5 @@ def render() -> None:
     render_metrics(snapshot)
     render_controls(ctx)
     render_board(ctx, snapshot)
+    render_maintenance(ctx)
     render_events(snapshot)
