@@ -24,7 +24,7 @@ logger = get_logger("run_agent")
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Handshake Task Agent monitoring loop")
+    parser = argparse.ArgumentParser(description="Task Triage Engine monitoring loop")
     parser.add_argument("--once", action="store_true", help="run a single cycle and exit")
     parser.add_argument("--interval", type=int, default=None,
                         help="seconds between cycles (default: POLL_INTERVAL_SECONDS)")

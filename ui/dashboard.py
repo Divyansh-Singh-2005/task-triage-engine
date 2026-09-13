@@ -220,7 +220,7 @@ def render_rules(ctx: AgentContext) -> None:
 
 def render_header(ctx: AgentContext, snapshot: BoardSnapshot) -> None:
     config = ctx.config()
-    st.title("Handshake Task Agent")
+    st.title("Task Triage Engine")
 
     bits = [
         f"Mode: {MODE_LABELS[config.monitoring_mode]}",
@@ -469,7 +469,7 @@ def render_events(snapshot: BoardSnapshot) -> None:
 
 
 def render() -> None:
-    st.set_page_config(page_title="Handshake Task Agent", layout="wide")
+    st.set_page_config(page_title="Task Triage Engine", layout="wide")
     ctx = get_context()
     if not require_passphrase(ctx.settings.dashboard_passphrase):
         return

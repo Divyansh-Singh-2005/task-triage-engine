@@ -1,4 +1,4 @@
-# Handshake Task Agent
+# Task Triage Engine
 
 A configurable, multi-project task monitoring and assistance system. It ingests
 task listings, filters them by project, evaluates each one against a skill

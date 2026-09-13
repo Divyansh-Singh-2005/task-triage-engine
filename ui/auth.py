@@ -28,7 +28,7 @@ def require_passphrase(expected: str) -> bool:
     if st.session_state.get(_UNLOCKED):
         return True
 
-    st.title("Handshake Task Agent")
+    st.title("Task Triage Engine")
     entered = st.text_input("Passphrase", type="password")
     if st.button("Unlock", type="primary"):
         # Constant-time comparison, so response timing says nothing useful.
